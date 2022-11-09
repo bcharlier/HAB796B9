@@ -20,11 +20,8 @@ Students are expected to know some rudiments on coding (if, for, while, function
 
 ## Course description
 
-This course focuses on discovering good coding practices (the language used being Python, but some element of bash and git will also be useful) for professional coding.
-A special focus on data processing and visualization will be at the heart of the course.
-We will mostly focus on basic programming concepts, as well as on discovering the Python scientific libraries, including ```numpy, scipy, pandas, matplotlib, seaborn```.
-Beyond `pandas` ninja skills, we will also introduce modern practices for coders : (unitary) tests, version control, documentation generation, etc.
-
+This course focuses on discovering good coding practices (the languages used being Python and R, but some element of bash and git will also be useful) for professional coding.
+A special focus on data processing and visualization applied to biology will be at the heart of the course.
 
 1. BC : (10/11/2022) [Introduction to linux essentials and command line tools: regexp, grep, find, rename](Courses/Bash/)
 
