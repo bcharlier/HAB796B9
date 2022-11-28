@@ -1,0 +1,485 @@
+---
+title: "Introduction à la visualisation sous R avec le package ggplot2"
+subtitle: "Introduction"
+author: "Jean-Michel Marin et Benjamin Charlier"
+institute: "CNRS -- IMAG (Montpellier, France)"
+date: Novembre 2022
+output: binb::metropolis
+classoption: "aspectratio=169,10pt"
+header-includes:  \usepackage{xcolor}
+---
+
+## Introduction
+
+\footnotesize
+
+```{r echo=TRUE, cache=TRUE, fig.align='center', fig.height=1.5, fig.width=5.5, message=FALSE, warning=FALSE}
+library(ggplot2)
+ggplot(iris,aes(x=Sepal.Width, y=Sepal.Length, colour=Species))+
+  geom_point(size=0.2)+
+  scale_colour_manual(values=c("magenta", "orange", "blue"))+
+  geom_smooth(method="lm", colour="red", size=0.15)
+```
+
+## Introduction
+
+- ```ggplot2``` visualization package for R 
+  ```R
+  install.packages("ggplot2")
+  install.packages("ggthemes")
+  ```
+
+- ```ggplot2``` is a system for declaratively creating graphics. Allows representation and exploration of datasets 
+
+- Learning curve is steep but... investment is quickly extremely profitable
+  - See the **documentation** at \url{https://ggplot2.tidyverse.org/}
+  - See gallery of examples \url{https://r-graph-gallery.com/ggplot2-package.html}, \url{https://exts.ggplot2.tidyverse.org/gallery/}, \url{http://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html} ...
+  
+
+- Other related project : ```plotly``` \url{https://plotly.com/r/}
+
+## Main principle of ggplot2 package
+
+\textcolor{red}{\large \bf ggplot2 syntax is about adding successives layers} 
+
+- First layer is the **graph canvas**
+  - Importing the considered data set, and variables names to be plotted
+
+- Second layer is **aesthetic mapping**
+  - Choosing the type of graph you want to plot: scatterplot, boxplot, barplot...
+
+- Then come the **refinement layers**
+  - they will allow you to choose the colors, the axis scales, the legend options...
+
+
+## Instantiate a ggplot2 graph
+
+To instantiate the ggplot2 graph, we use ```ggplot()```together with the argument ```aes()```
+
+- ggplot2 graphs always start with this code
+```R
+ggplot(dataset, aes(x=, y = )) 
+```
+
+## Instantiate a ggplot2 graph
+
+```{r echo=TRUE, cache=TRUE, fig.align='center', fig.height=1.5, fig.width=5.5, message=FALSE, warning=FALSE}
+ggplot(mtcars, aes(x=disp,y=mpg)) 
+```
+
+## Choosing a plot type : geom_XXX
+
+To define the type of plot : scatter plot, boxplot, barplot... 
+
+- Add a ```+``` operator at the end of the first line (ie ggplot2 class constructor), and add a new line with the desired function:
+   - ```geom_point()```: scatter plot
+   - ```geom_boxplot()```: boxplot
+   - ```geom_bar()```: barplot...
+
+## Choosing a plot type : geom_XXX
+
+```{r echo=TRUE, cache=TRUE, fig.align='center', fig.height=1.5, fig.width=5.5, message=FALSE, warning=FALSE}
+ggplot(mtcars, aes(x=disp, y=mpg))+
+  geom_point(size=0.5) 
+```
+
+## Graphical options
+
+Finaly, fine tuning of aestethic options may be setup by adding extra layers 
+
+- axes sizes and scales :  ```scale_x_continuous(trans='log10')```, ```xlim```, ```expand_limits```, ...
+
+- colours : ```scale_colour_manual()```
+
+- axes labels, with the functions ```xlab()```, ```ylab()```, ...
+
+- legend or caption, e.g. ```theme(legend.position,=”bottom”)```
+
+## Graphical options
+
+\footnotesize 
+To transform the x-axis into log scale add a layer with the fucntion ```coord_trans()```
+
+```{r echo=TRUE, cache=TRUE, fig.align='center', fig.height=1.5, fig.width=5.5, message=FALSE, warning=FALSE}
+ggplot(mtcars, aes(x=disp, y=mpg))+
+  geom_point(size=0.5)+
+  coord_trans(x="log10") 
+```
+
+## Scatterplot with ggplot2
+
+\footnotesize
+Assume we need to graph a scatter plot with iris dataset: with x-axis being ```Sepal.Width``` variable and y-axis being ```Sepal.Length```:
+
+```{r echo=TRUE, cache=TRUE, fig.align='center', fig.height=1.5, fig.width=5.5, message=FALSE, warning=FALSE}
+ggplot(iris, aes(x=Sepal.Width, y=Sepal.Length))+
+  geom_point(size=0.5) 
+```
+
+## Scatterplot with ggplot2
+
+The iris dataset is composed with 3 diferent iris species (variable ```Species```) 
+
+```{r echo=TRUE, cache=TRUE, fig.align='center', fig.height=1.5, fig.width=5.5, message=FALSE, warning=FALSE}
+ggplot(iris, aes(x=Sepal.Width, y=Sepal.Length, colour=Species))+
+  geom_point(size=0.5) 
+```
+
+## Scatterplot with ggplot2
+
+To change default colours with your custom choice, use the function ```scale_colour_manual()```. Careful with red/green (color blind) and yellow (readibility)...
+
+```{r echo=TRUE, cache=TRUE, fig.align='center', fig.height=1.5, fig.width=5.5, message=FALSE, warning=FALSE}
+ggplot(iris,aes(x=Sepal.Width, y=Sepal.Length, colour=Species))+
+  geom_point(size=0.5)+
+  scale_colour_manual(values=c("magenta", "orange", "blue")) 
+```
+
+## Scatterplot with ggplot2
+
+To display different point types, we use the shape argument in ``aes()``.
+
+```{r echo=TRUE, cache=TRUE, fig.align='center', fig.height=1.5, fig.width=5.5, message=FALSE, warning=FALSE}
+ggplot(iris, aes(x=Sepal.Width, y=Sepal.Length, colour=Species, shape=Species))+
+  geom_point(size=0.8)+
+  scale_colour_manual(values=c("magenta", "orange", "blue")) 
+```
+
+## Scatterplot with ggplot2
+
+To manually set point types, we use ```scale_shape_manual()```
+
+```{r echo=TRUE, cache=TRUE, fig.align='center', fig.height=1.5, fig.width=5.5, message=FALSE, warning=FALSE}
+ggplot(iris,aes(x=Sepal.Width, y=Sepal.Length, colour=Species, shape=Species))+
+  geom_point(size=0.8)+
+  scale_shape_manual(values=c(21, 23, 25))
+```
+
+## Scatterplot with ggplot2
+
+We are able to change the size of points. For instance, let the size depends on the value of some variable
+
+```{r echo=TRUE, cache=TRUE, fig.align='center', fig.height=1.5, fig.width=5.5, message=FALSE, warning=FALSE}
+ggplot(iris, aes(x=Sepal.Width, y=Sepal.Length, size=Petal.Length))+
+  geom_point(alpha=0.7) 
+```
+
+## Scatterplot with ggplot2
+
+To add a regression curve or line, use the function ```geom_smooth()```
+
+```{r echo=TRUE, cache=TRUE, fig.align='center', fig.height=1.5, fig.width=5.5, message=FALSE, warning=FALSE}
+ggplot(iris, aes(x=Sepal.Width, y=Sepal.Length, colour=Species))+
+  geom_point(size=0.5)+
+  geom_smooth(colour="red") 
+```
+
+## Scatterplot with ggplot2
+
+Useful trick: adding a (least square) regression line, using the argument ```method="lm"```
+
+```{r echo=TRUE, cache=TRUE, fig.align='center', fig.height=1.5, fig.width=5.5, message=FALSE, warning=FALSE}
+ggplot(iris, aes(x=Sepal.Width, y=Sepal.Length, colour=Species))+
+  geom_point(size=0.5)+
+  geom_smooth(method="lm", colour="red") 
+```
+
+## Scatterplot with ggplot2
+
+It is also possible to add a (least square) regression by species, using the argument ```group``` in ```aes()``` (first line)
+
+```{r echo=TRUE, cache=TRUE, fig.align='center', fig.height=1.5, fig.width=5.5, message=FALSE, warning=FALSE}
+ggplot(iris, aes(x=Sepal.Width, y=Sepal.Length, colour=Species, group=Species))+
+  geom_point(size=0.5)+
+  geom_smooth(method="lm") 
+```
+
+## Boxplot with ggplot2
+
+Assume we now need a boxplot of the ```Sepal.Length``` variable by species... 
+
+```{r echo=TRUE, cache=TRUE, fig.align='center', fig.height=1.5, fig.width=5.5, message=FALSE, warning=FALSE}
+ggplot(iris,aes(y=Sepal.Length, x=Species))+
+  geom_boxplot() 
+```
+
+## Boxplot with ggplot2
+
+To change the colour of the boxes, we use the ```fill``` option (instead of ```colour``` as before), in function ```aes()```:
+
+```{r echo=TRUE, cache=TRUE, fig.align='center', fig.height=1.5, fig.width=5.5, message=FALSE, warning=FALSE}
+ggplot(iris, aes(y=Sepal.Length, x=Species, fill=Species))+
+  geom_boxplot() 
+```
+
+## Boxplot with ggplot2
+
+To add the observed data points, we use the ```geom_jitter()``` layer:
+
+```{r echo=TRUE, cache=TRUE, fig.align='center', fig.height=1.5, fig.width=5.5, message=FALSE, warning=FALSE}
+ggplot(iris,aes(y=Sepal.Length, x=Species, fill=Species, colour=Species))+
+  geom_boxplot(alpha=0.5)+
+  geom_jitter(width=0.25, size=0.5) 
+```
+
+## Barplots with ggplot2
+
+Counting barplot may be plotted easily:
+
+```{r echo=TRUE, cache=TRUE, fig.align='center', fig.height=1.5, fig.width=3.5, message=FALSE, warning=FALSE}
+ggplot(mtcars,aes(x=as.factor(gear)))+
+  geom_bar() 
+```
+
+## Barplots with ggplot2
+
+```{r echo=TRUE, cache=TRUE, fig.align='center', fig.height=1.5, fig.width=3.5, message=FALSE, warning=FALSE}
+ggplot(mtcars, aes(as.factor(gear), fill=as.factor(gear)))+
+  geom_bar()
+```
+
+## Barplots with ggplot2
+        
+```{r echo=TRUE, cache=TRUE, fig.align='center', fig.height=1.5, fig.width=3.5, message=FALSE, warning=FALSE}
+ggplot(mtcars, aes(as.factor(gear), fill=as.factor(carb)))+
+  geom_bar() 
+```
+
+## Barplots with ggplot2
+
+```{r echo=TRUE, cache=TRUE, fig.align='center', fig.height=1.5, fig.width=3.5, message=FALSE, warning=FALSE}
+ggplot(mtcars, aes(as.factor(gear)))+
+  geom_bar(aes(fill=as.factor(carb)), position="fill") 
+```
+
+## Barplots with ggplot2
+
+```{r echo=TRUE, cache=TRUE, fig.align='center', fig.height=1.5, fig.width=3.5, message=FALSE, warning=FALSE}
+ggplot(mtcars,aes(as.factor(gear),fill=as.factor(carb)))+
+  geom_bar(position="dodge") 
+```
+
+## Barplots with ggplot2
+
+```{r echo=TRUE, cache=TRUE, fig.align='center', fig.height=1.5, fig.width=3.5, message=FALSE, warning=FALSE}
+ggplot(mtcars, aes(as.factor(gear)))+
+  geom_bar(aes(fill=as.factor(carb)), position="dodge")+
+  scale_fill_manual(values=c("red", "yellow", "blue", "magenta", "orange", "white")) 
+```
+
+
+## Pie chart with ggplot2
+
+```{r echo=TRUE, cache=TRUE, fig.align='center', fig.height=2, fig.width=5.5, message=FALSE, warning=FALSE}
+ggplot(mtcars, aes(x=factor(1), fill=as.factor(gear)))+
+  geom_bar(width=1)+
+  coord_polar("y")+
+  labs(x="", fill="Gear")
+```
+
+
+## Facetting (a.k.a. subplots)
+
+\footnotesize
+Dividing a graph into subplots, according to the modalities of one or more variables
+
+```{r echo=TRUE, cache=TRUE, fig.align='center', fig.height=1.5, fig.width=5.5, message=FALSE, warning=FALSE}
+library(MASS)
+ggplot(Melanoma, aes(y=thickness,x=time))+
+  geom_point(size=0.2)+
+  geom_smooth()+
+  facet_wrap(~status) 
+```
+
+## Facetting (a.k.a. subplots)
+
+Dividing a plot according to the values of 2 variables
+
+```{r echo=TRUE, cache=TRUE, fig.align='center', fig.height=1.5, fig.width=5.5, message=FALSE, warning=FALSE}
+ggplot(Melanoma, aes(y=thickness, x=time))+
+  geom_point(size=0.2)+
+  geom_smooth(size=0.15)+
+  facet_grid(sex~status) 
+```
+
+## Mapping 
+
+\footnotesize
+
+The option ```colour=Species``` in the ```aes()``` function is **inherited** in every subsequent layers...
+
+```{r echo=TRUE, cache=TRUE, fig.align='center', fig.height=1.5, fig.width=5.5, message=FALSE, warning=FALSE}
+ggplot(iris, aes(y=Sepal.Length, x=Species, colour=Species))+
+  geom_violin()+
+  geom_jitter(width=0.25, size=0.4) 
+```
+
+## Mapping 
+
+To fix the colour in a particular layer, we have to explicitely call the ```colour``` option in this layer
+
+```{r echo=TRUE, cache=TRUE, fig.align='center', fig.height=1.5, fig.width=5.5, message=FALSE, warning=FALSE}
+ggplot(iris, aes(y=Sepal.Length,x=Species,colour=Species))+
+  geom_violin()+
+  geom_jitter(width=0.25, colour="magenta", alpha=0.5, size=0.4) 
+```
+
+## Themes
+
+There is a variety of different graphical theme
+
+```{r echo=TRUE, cache=TRUE, fig.align='center', fig.height=1.5, fig.width=5.5, message=FALSE, warning=FALSE}
+ggplot(iris, aes(y=Sepal.Length, x=Species, colour=Species))+
+  geom_violin()+
+  geom_jitter(width=0.25, size=0.4)+
+  theme_classic() 
+```
+
+## Themes
+
+```{r echo=TRUE, cache=TRUE, fig.align='center', fig.height=1.5, fig.width=3.5, message=FALSE, warning=FALSE}
+library(ggthemes) 
+ggplot(iris, aes(y=Sepal.Length, x=Species, colour=Species))+
+  geom_violin()+
+  geom_jitter(width=0.25)+
+  theme_excel()
+```
+
+## Axes, title and legend
+
+```{r echo=TRUE, cache=TRUE, fig.align='center', fig.height=1.5, fig.width=5.5, message=FALSE, warning=FALSE}
+ggplot(iris,aes(y=Sepal.Length, x=Species, fill=Species,colour=Species))+
+  geom_boxplot(alpha=0.5)+
+  geom_jitter(width=0.25)+ggtitle("A veeeeeeeeery looooong tiiiiiiiiiitle")+
+  ylab("Sepal Length")+
+  xlab("Species")
+```
+
+<!-- ## Outro -->
+
+<!-- ```{r echo=TRUE, cache=TRUE, fig.align='center', fig.height=2.5, fig.width=5.5, message=FALSE, warning=FALSE} -->
+
+<!-- library(gapminder) -->
+<!-- library(gganimate) -->
+
+<!-- ggplot(gapminder, aes(gdpPercap, lifeExp, size = pop, colour = country)) + -->
+<!--   geom_point(alpha = 0.7, show.legend = FALSE) + -->
+<!--   scale_colour_manual(values = country_colors) + -->
+<!--   scale_size(range = c(2, 12)) + -->
+<!--   scale_x_log10() + -->
+<!--   facet_wrap(~continent) + -->
+<!--   # Here comes the gganimate specific bits -->
+<!--   labs(title = 'Year: {frame_time}', x = 'GDP per capita', y = 'life expectancy') + -->
+<!--   transition_time(year) + -->
+<!--   ease_aes('linear') -->
+<!-- ``` -->
+
+## Exercise 1
+
+With the ```mtcars``` dataset (from the R  package ```datasets```)
+
+1. Plot an histogram of ```mpg``` variable
+2. Plot a barplot of variable ```cyl```
+3. Plot the point cloud ```disp``` vs ```mpg``` with a different colour depending on the  values of ```cyl``` variable 
+```{r echo=FALSE, cache=TRUE, fig.align='center', fig.height=1.5, fig.width=5.5, message=FALSE, warning=FALSE}
+nb_cyl <- as.factor(mtcars$cyl)
+ggplot(mtcars,aes(x=disp,y=mpg, colour=nb_cyl))+
+geom_point()
+```
+## Exercise 2
+
+1. Use ggplot2 to plot the sine function on the $[−2\pi, 2\pi]$.
+2. Add the lines $y = −1$ and $y = 1$ in thick blue.
+3. Add the cosine function.
+4. Add legend to identify the sine and cosine function.
+5. Plot cosine and sine on two subgraphs (use ```facet_wrap```).
+```{r echo=FALSE, cache=TRUE, fig.align='center', fig.height=1.5, fig.width=5.5, message=FALSE, warning=FALSE}
+
+X <- seq(-2*pi,2*pi,by=0.1)
+n <- length(X)
+D <- data.frame(x=rep(X,2),
+type=c(rep("sine",n),rep("cosine",n)),f=c(sin(X),cos(X)))
+
+
+ggplot(D,aes(x=x,y=f,colour=type))+
+  geom_line()+
+  geom_hline(yintercept=-1,size=2, colour="blue")+
+  geom_hline(yintercept=1,size=2, colour="blue")+
+  theme(legend.position="none")+
+  facet_wrap(~type)
+```
+
+## Exercise 3
+
+1. Simulate a sample $(x_i , y_i ), i = 1, \cdots, 100$, following the model
+$$Y_i = 3 + X_i + \varepsilon_i$$
+where $X_i$ are i.i.d. uniform on $[0, 1]$ random variables and  $\varepsilon_i$ are i.i.d. centered Gaussian of variance $0.04$.
+
+2. Plot the corresponding dataset as a point cloud and the least square regression line with the ```geom_smooth``` function.
+
+3. Plot the residuals: add a vertical segment linking each point to the least square regression line.
+
+```{r echo=FALSE, cache=TRUE, fig.align='center', fig.height=1.5, fig.width=5.5, message=FALSE, warning=FALSE}
+
+n <- 100
+x <- runif(n)
+y <- 3+x+rnorm(n,sd=0.2)
+D <- data.frame(x=x,y=y)
+
+model.reg <- lm(y~x,data=D)
+
+D <- data.frame(x=x, y=y, yhat=model.reg$fitted.values)
+
+ggplot(D,aes(x=x,y=y))+
+  geom_point()+
+  geom_segment(data=D, aes(x=x, y=y, xend=x, yend=yhat), color="red", alpha=0.5)+
+  geom_abline(intercept=model.reg$coefficients[1],slope=model.reg$coefficients[2], color="blue")+
+  theme_classic()
+
+```
+
+## Exercise 4
+
+Consider the dataset ```states``` from datasets package:
+```R
+data(state)
+states <- data.frame(state.x77,state.name=rownames(state.x77), 
+                     state.region=state.region)
+```
+1. Create a variable ```Income1``` taking the value ```low``` if the ```Income``` is in the first tercile, ```medium``` in the second and ```high``` in the third one (use functions ```quantile``` and ```cut```).
+2. Plot the point clouds  ```Population``` vs ```Murder``` for each value of ```Income1``` (3 point clouds).
+3. Use a different colour for each point according to the variable ```state.region``` and add the least square regression line on each graph.
+
+## Exercise 4
+
+```{r echo=FALSE, cache=TRUE, fig.align='center', fig.height=2.5, fig.width=6, message=FALSE, warning=FALSE}
+
+
+data(state)
+states <- data.frame(state.x77,state.name=rownames(state.x77), state.region=state.region)
+
+# 1
+
+q1 <- quantile(states$Income,1/3,names=FALSE)
+q2 <- quantile(states$Income,2/3,names=FALSE) 
+states$revenu1 <- cut(states$Income,breaks=c(min(states$Income),q1,q2,max(states$Income)),labels=c("low","medium","high"),include.lowest=TRUE)
+# summary(states$revenu1)
+
+# 2
+
+# ggplot(states,aes(x=Population,y=Murder))+
+# geom_point()+
+# facet_wrap(~revenu1)+
+# theme_classic()
+
+# 3
+
+ggplot(states,aes(x=Population,y=Murder))+
+  geom_smooth(method="lm",se=FALSE)+
+  geom_point(aes(colour=state.region), size=0.3)+
+  facet_wrap(~revenu1)+
+  theme(axis.text.x = element_text(angle = 30))
+```
+
+## Bibliography
+
