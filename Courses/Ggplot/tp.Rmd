@@ -355,7 +355,9 @@ ggplot(iris,aes(y=Sepal.Length, x=Species, fill=Species,colour=Species))+
   xlab("Species")
 ```
 
-<!-- ## Outro -->
+## Outro
+
+Consider ggplot2 extensions like ```animate``` : \url{https://gganimate.com/#yet-another-example}
 
 <!-- ```{r echo=TRUE, cache=TRUE, fig.align='center', fig.height=2.5, fig.width=5.5, message=FALSE, warning=FALSE} -->
 
@@ -483,3 +485,6 @@ ggplot(states,aes(x=Population,y=Murder))+
 
 ## Bibliography
 
+- P.-A. Cornillon, A. Guyader, F. Husson, N. Jégou, J. Josse, N. Klutchnikoff, E. Le Pennec, E. Matzner-Løber, L. Rouvière, B. Thieurme - \textit{R pour la statistique et la science des données}. Pratique de la statistique, Presses universitaires de Rennes. 2018
+
+- ggplot2 documentation. \url{https://ggplot2.tidyverse.org/}
